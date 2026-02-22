@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Film &amp; Video &mdash; From Transformers to Seedance 2.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+
+  /* Slide backgrounds */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+  }
+
+  .slide-title::before {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  }
+
+  .slide-feature::before {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  }
+
+  .slide-demo::before {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  }
+
+  .slide-end::before {
+    background: linear-gradient(135deg, #1a0533 0%, #0f0c29 50%, #302b63 100%);
+  }
+
+  /* Decorative elements */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    z-index: -1;
+  }
+
+  .glow-1 { width: 400px; height: 400px; background: #7c3aed; top: -100px; right: -100px; }
+  .glow-2 { width: 300px; height: 300px; background: #06b6d4; bottom: -50px; left: -50px; }
+  .glow-3 { width: 350px; height: 350px; background: #f59e0b; top: 50%; right: 10%; }
+
+  /* Typography */
+  h1 {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h2 {
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #a78bfa;
+  }
+
+  .subtitle {
+    font-size: 24px;
+    font-weight: 300;
+    color: #94a3b8;
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  p, li {
+    font-size: 20px;
+    line-height: 1.7;
+    color: #cbd5e1;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  .badge-purple { background: rgba(124, 58, 237, 0.2); color: #a78bfa; border: 1px solid rgba(124, 58, 237, 0.3); }
+  .badge-cyan { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.3); }
+  .badge-amber { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge-green { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(124, 58, 237, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .card h3 { font-size: 20px; margin-bottom: 10px; }
+  .card p { font-size: 16px; color: #94a3b8; }
+
+  /* Two columns */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* Demo layout */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    flex: 1;
+  }
+
+  .demo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .demo-input img {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .demo-output video {
+    width: 100%;
+    max-height: 60vh;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  /* Prompt box */
+  .prompt-box {
+    background: rgba(124, 58, 237, 0.06);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-left: 4px solid #7c3aed;
+    border-radius: 14px;
+    padding: 28px 32px;
+  }
+
+  .prompt-label {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #a78bfa;
+    margin-bottom: 12px;
+  }
+
+  .prompt-text {
+    font-size: 24px;
+    line-height: 1.7;
+    color: #cbd5e1;
+  }
+
+  /* Arrow label between input/output */
+  .col-header {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  /* Spec highlight */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .spec-item {
+    text-align: center;
+    padding: 32px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+  }
+
+  .spec-value {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .spec-label {
+    font-size: 16px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 32px;
+    right: 40px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .nav button {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav button:hover {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: rgba(124, 58, 237, 0.5);
+  }
+
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    transition: width 0.3s ease;
+    z-index: 100;
+  }
+
+  .slide-number {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    font-size: 14px;
+    color: #484f58;
+    font-weight: 500;
+    z-index: 100;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide.active > * {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .slide.active > *:nth-child(1) { animation-delay: 0s; }
+  .slide.active > *:nth-child(2) { animation-delay: 0.1s; }
+  .slide.active > *:nth-child(3) { animation-delay: 0.2s; }
+  .slide.active > *:nth-child(4) { animation-delay: 0.3s; }
+  .slide.active > *:nth-child(5) { animation-delay: 0.4s; }
+
+  .highlight { color: #a78bfa; font-weight: 600; }
+  .highlight-cyan { color: #67e8f9; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Hook — Viral AI Video -->
+<div class="slide slide-title active" id="slide-1" style="padding: 40px 60px;">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <h2 style="margin-bottom: 16px; font-size: 32px; color: #fff;">"Uproar Over AI-Generated Brad Pitt And Tom Cruise Fight Scene"</h2>
+  <div id="yt-container" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+    <!-- YouTube embed (works when served via http) -->
+    <iframe id="yt-embed" src="https://www.youtube.com/embed/pDA1LMceoRY?rel=0" title="Uproar Over AI-Generated Brad Pitt And Tom Cruise Fight Scene" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%; aspect-ratio: 16/9; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); display: none;"></iframe>
+    <!-- Fallback thumbnail (for file:// protocol) -->
+    <a id="yt-fallback" href="https://www.youtube.com/watch?v=pDA1LMceoRY" target="_blank" style="position: relative; display: none; width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); transition: border-color 0.3s; text-decoration: none;" onmouseover="this.style.borderColor='rgba(124,58,237,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+      <img src="media/images/hook_youtube_thumb.jpg" alt="YouTube thumbnail" style="width: 100%; display: block;">
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
+        <div style="width: 80px; height: 80px; background: rgba(255,0,0,0.9); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 0; height: 0; border-top: 18px solid transparent; border-bottom: 18px solid transparent; border-left: 30px solid #fff; margin-left: 4px;"></div>
+        </div>
+      </div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 24px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+        <p style="font-size: 16px; color: #fff; font-weight: 500;">Inside Edition &bull; Click to play on YouTube</p>
+      </div>
+    </a>
+  </div>
+  <p style="font-size: 18px; color: #94a3b8; margin-top: 8px; text-align: center;">This video was generated by <span class="highlight">Seedance 2.0</span> &mdash; No cameras. No actors. No post-production. Just a text prompt.</p>
+</div>
+
+<!-- SLIDE 2: Seedance 2.0 Introduction (Bilingual) -->
+<div class="slide slide-feature" id="slide-2" style="padding: 60px 80px; justify-content: flex-start;">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <!-- Top section: left text + right banner image -->
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; margin-bottom: 36px;">
+    <div style="flex: 1;">
+      <!-- Logo & brand bar -->
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+        <span style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: #a78bfa;">Volcengine &middot; Doubao</span>
+        <span style="width: 1px; height: 18px; background: rgba(255,255,255,0.2); display: inline-block;"></span>
+        <span style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: #67e8f9;">火山方舟 &middot; 豆包大模型</span>
+      </div>
+      <!-- Title -->
+      <h1 style="font-size: 60px; margin-bottom: 12px; background: linear-gradient(135deg, #fff 0%, #c4b5fd 40%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Doubao Seedance 2.0</h1>
+      <!-- Chinese tagline -->
+      <p style="font-size: 34px; font-weight: 700; color: #e0e7ff; margin-bottom: 6px; line-height: 1.3;">万物皆为灵感，创作无限可能</p>
+      <!-- English tagline -->
+      <p style="font-size: 20px; font-weight: 400; color: #94a3b8; font-style: italic;">Everything inspires. Creation has no limits.</p>
+    </div>
+    <!-- Banner image top-right -->
+    <div style="flex-shrink: 0; width: 420px;">
+      <img src="media/images/seedance_banner.png" style="width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(124,58,237,0.2);" />
+    </div>
+  </div>
+  <!-- Description block below -->
+  <div style="display: flex; flex-direction: column; gap: 16px; max-width: 100%;">
+    <!-- Chinese description -->
+    <p style="font-size: 17px; line-height: 1.9; color: #cbd5e1;">Doubao-Seedance-2.0 是豆包大模型团队推出的新一代<span style="color: #a78bfa; font-weight: 600;">专业级多模态视频创作模型</span>。支持图片、视频、音频等多模态素材参考，具备<span style="color: #a78bfa; font-weight: 600;">视频编辑与延长</span>能力，使生视频工具进入可精准生成、可复用迭代的工业化新阶段。模型对<span style="color: #67e8f9; font-weight: 600;">物理规律的理解</span>持续深化、更贴合真实世界，<span style="color: #67e8f9; font-weight: 600;">意图理解能力</span>显著提升，能严格遵循指令细节约束，从而保障专业级叙事的可信度。</p>
+    <!-- English description -->
+    <p style="font-size: 15px; line-height: 1.9; color: #94a3b8;">Doubao-Seedance-2.0 is the next-generation <span style="color: #c4b5fd;">professional multimodal video creation model</span> from the Doubao team. It supports image, video, and audio references, with <span style="color: #c4b5fd;">video editing and extension</span> capabilities — ushering AI video tools into a new era of precision generation and reusable iteration. The model's understanding of <span style="color: #7dd3fc;">physical laws</span> continues to deepen, and its <span style="color: #7dd3fc;">intent comprehension</span> has improved significantly, enabling strict adherence to prompt details for professional-grade storytelling.</p>
+  </div>
+</div>
+
+<!-- SLIDE 3: Multimodal Reference — Input & Output -->
+<div class="slide slide-demo" id="slide-3" style="padding: 48px 72px;">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-amber">Multimodal Input</span>
+  <h2 style="font-size: 32px; margin-bottom: 6px;">万物皆为灵感：多模态参考素材输入，创作更简单</h2>
+  <p style="font-size: 15px; color: #94a3b8; margin-bottom: 20px; max-width: 100%; line-height: 1.7;">除文生视频、图生视频（首尾帧），Seedance 2.0支持同时上传<span style="color: #a78bfa; font-weight: 600;">图片、视频、音频</span>等多模态素材并进行<span style="color: #a78bfa; font-weight: 600;">自由组合</span>。通过控制Prompt，同时使用多模态参考与首尾帧生视频。企业现有的任何数字资产，都能成为创作的起点。</p>
+  <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.6; font-style: italic;">Beyond text-to-video and image-to-video, Seedance 2.0 supports uploading images, videos, and audio simultaneously for free-form multimodal composition. Any existing digital asset can become a creative starting point.</p>
+  <!-- Two-column: Input (left) + Output (right) -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; align-items: center;">
+    <!-- Left: Inputs -->
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <!-- Images + Video row -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div>
+          <div class="col-header" style="color: #a78bfa; margin-bottom: 4px; font-size: 12px;">图片1 / Image 1</div>
+          <img src="media/images/img_multimodal_img1.png" style="width: 100%; border-radius: 10px; border: 1px solid rgba(124,58,237,0.3);">
+        </div>
+        <div>
+          <div class="col-header" style="color: #67e8f9; margin-bottom: 4px; font-size: 12px;">图片2 / Image 2</div>
+          <img src="media/images/img_multimodal_img2.png" style="width: 100%; border-radius: 10px; border: 1px solid rgba(6,182,212,0.3);">
+        </div>
+        <div>
+          <div class="col-header" style="color: #fbbf24; margin-bottom: 4px; font-size: 12px;">视频1 / Video</div>
+          <video src="media/videos/vid_multimodal_input.mp4" controls playsinline style="width: 100%; border-radius: 10px; border: 1px solid rgba(245,158,11,0.3); background: #000;"></video>
+        </div>
+      </div>
+      <!-- Reference audio -->
+      <div>
+        <div class="col-header" style="color: #67e8f9; margin-bottom: 4px; font-size: 12px;">参考音频 / Reference Music</div>
+        <audio src="media/videos/audio_multimodal_ref.mp3" controls style="width: 100%; height: 36px; border-radius: 8px;"></audio>
+      </div>
+      <!-- Prompt -->
+      <div class="prompt-box" style="padding: 16px 20px;">
+        <div class="prompt-label" style="font-size: 13px;">Prompt</div>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.7;">全程使用视频1的第一视角构图，全程使用@参考音频作为背景音乐。第一人称视角果茶宣传广告，seedance牌"苹苹安安"苹果果茶限定款；首帧为@图片1，你的手摘下一颗带晨露的阿克苏红苹果，轻脆的苹果碰撞声；2-4 秒：快速切镜，你的手将苹果块投入一雪克杯，加入冰块与茶底，用力摇晃，冰块碰撞声与摇见声卡点轻快鼓点，背景音："鲜切现搅"；4-6 秒：第一人称成品特写，分层果茶倒入透明杯，你的手轻挤奶盖在顶部铺展，在杯身贴上粉红色包标，镜头拉近看奶盖与果茶的分层纹理；6-8 秒：第一人称手持举杯，将@图片2中的果茶举到镜头前，杯身标签清晰可见，背景音"来一口鲜爽"，尾帧定格为@图片2。背景声音统一为女生音色。</p>
+      </div>
+    </div>
+    <!-- Right: Output -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #6ee7b7; margin-bottom: 8px;">输出视频 / Generated Output</div>
+      <video src="media/videos/vid_multimodal_output.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(16,185,129,0.3); background: #000; max-height: 55vh;"></video>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Video Extension & Editing -->
+<div class="slide slide-demo" id="slide-4" style="padding: 48px 72px;">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-purple">Video Editing</span>
+  <h2 style="font-size: 32px; margin-bottom: 6px;">牵一发不动全身：视频延长与编辑能力上线</h2>
+  <p style="font-size: 15px; color: #94a3b8; margin-bottom: 10px; max-width: 100%; line-height: 1.7;">Seedance 2.0 支持对视频进行<span style="color: #a78bfa; font-weight: 600;">平滑延长、双段/三段视频衔接补全</span>，以及<span style="color: #a78bfa; font-weight: 600;">增删元素等局部编辑能力</span>，在不影响原视频整体节奏与结构的基础上实现精准调整。客户可实现"一次创作，多处适配"，让视频素材真正活起来、用到底。</p>
+  <p style="font-size: 13px; color: #64748b; margin-bottom: 18px; line-height: 1.6; font-style: italic;">Seedance 2.0 supports smooth video extension, multi-segment stitching, and local element editing — precise adjustments without disrupting the original rhythm and structure.</p>
+  <!-- Three videos side by side -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; flex: 1; align-items: center;">
+    <!-- Original video -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #a78bfa; margin-bottom: 6px;">原始视频 / Original</div>
+      <video src="media/videos/vid_edit_original.mp4" controls playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(124,58,237,0.3); background: #000;"></video>
+    </div>
+    <!-- Extended video -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #67e8f9; margin-bottom: 6px;">视频延长（前序生成）/ Extended</div>
+      <video src="media/videos/vid_edit_extended.mp4" controls playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(6,182,212,0.3); background: #000;"></video>
+      <div class="prompt-box" style="margin-top: 10px; padding: 10px 14px; text-align: left;">
+        <div class="prompt-label" style="font-size: 11px;">Prompt</div>
+        <p style="font-size: 11px; color: #cbd5e1; line-height: 1.6;">结合@视频1，补全视频的前置镜头，主角在乘坐地铁时对旁边朋友讲电话的情节，画面风格保持一致。</p>
+      </div>
+    </div>
+    <!-- Element replaced video -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #6ee7b7; margin-bottom: 6px;">视频编辑（元素替换）/ Edited</div>
+      <video src="media/videos/vid_edit_replaced.mp4" controls playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); background: #000;"></video>
+      <div class="prompt-box" style="margin-top: 10px; padding: 10px 14px; text-align: left;">
+        <div class="prompt-label" style="font-size: 11px;">Prompt</div>
+        <p style="font-size: 11px; color: #cbd5e1; line-height: 1.6;">改写@视频1情节，男主播报女主点，发现女主是原版，两个人认出彼此，并互相问候。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Physics — Realistic World Simulation -->
+<div class="slide slide-demo" id="slide-5" style="padding: 48px 72px;">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-cyan">Physics &amp; Realism</span>
+  <h2 style="font-size: 32px; margin-bottom: 6px;">还原真实世界：符合物理规律，运动质量大幅提升</h2>
+  <p style="font-size: 15px; color: #94a3b8; margin-bottom: 12px; max-width: 100%; line-height: 1.7;">物体的运动轨迹、多人交互、光影变化都更加<span style="color: #67e8f9; font-weight: 600;">符合真实世界的物理规律</span>，即便在复杂的运镜与动态场景下，仍能保持高度的<span style="color: #67e8f9; font-weight: 600;">运动连贯性与合理性</span>，支撑起包含复杂交互、长镜头调度与精细环境下的动态叙事。</p>
+  <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.6; font-style: italic;">Object trajectories, multi-person interactions, and lighting changes all adhere to real-world physics. Even under complex camera movements and dynamic scenes, the model maintains high motion coherence and plausibility.</p>
+  <!-- Video + Prompt -->
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; flex: 1; align-items: center;">
+    <!-- Output video -->
+    <div style="text-align: center;">
+      <video src="media/videos/vid_physics_water.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(6,182,212,0.3); background: #000; max-height: 52vh;"></video>
+    </div>
+    <!-- Prompt -->
+    <div>
+      <div class="prompt-box" style="padding: 18px 22px;">
+        <div class="prompt-label" style="font-size: 13px;">Prompt</div>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.8;">强节奏音乐驱动，全程快切蒙太奇 + 慢动作 + 微距 + 延时摄影，无对白，仅节拍、低频鼓点、呼吸声与环境声，营造震撼科技感。0~5秒：肉眼难见的微观与隐藏世界——水滴超微距星冠璀璨飞溅，花粉漂浮、阳光粒子、蝴蝶鳞粉、音箱沙粒声波可视化，云层/星轨/城市人流延时，水下气泡与光线"AI视觉增强"画面。6~13秒：节拍加速，世界随音乐起舞——极光与绿色光幕群舞、海豚跃出水面、水花冻结，鱼群转向成流线状旋涡，海浪拍击，鸟群齐飞，风吹麦浪，城市人流车流运作化为艺术河流。14~15秒：极致微距人眼特写，瞳孔中倒映前述画面，只余心跳声。</p>
+      </div>
+      <p style="font-size: 12px; color: #64748b; margin-top: 12px; line-height: 1.6; font-style: italic;">A rhythm-driven montage: water crown splashes, pollen, butterflies, aurora, dolphins, bird flocks, and city flows — all captured in macro, slow-motion, and time-lapse. Ends with an extreme close-up of a human eye reflecting all the scenes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Product Showcase — Element Replacement -->
+<div class="slide slide-demo" id="slide-6" style="padding: 48px 72px;">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-green">Use Case</span>
+  <h2 style="font-size: 32px; margin-bottom: 8px;">商品展示</h2>
+  <p style="font-size: 15px; color: #94a3b8; margin-bottom: 16px; line-height: 1.7;">将@视频1礼盒中的香水替换成@图片1中的面霜，运镜不变。</p>
+  <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-style: italic;">Replace the perfume in the unboxing video with the face cream from the reference image, keeping the same camera movement.</p>
+  <!-- Three columns: Image 1 + Input Video + Output Video -->
+  <div style="display: grid; grid-template-columns: 0.8fr 1.2fr 1.2fr; gap: 28px; flex: 1; align-items: center;">
+    <!-- Reference image -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #a78bfa; margin-bottom: 6px;">图片1 / Reference Image</div>
+      <img src="media/images/img_multimodal_img1.png" style="width: 100%; border-radius: 12px; border: 1px solid rgba(124,58,237,0.3);">
+      <div class="prompt-box" style="margin-top: 12px; padding: 12px 16px; text-align: left;">
+        <div class="prompt-label" style="font-size: 11px;">Prompt</div>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6;">将@视频1礼盒中的香水替换成@图片1中的面霜，运镜不变。</p>
+      </div>
+    </div>
+    <!-- Input video -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #fbbf24; margin-bottom: 6px;">视频1 / Input Video</div>
+      <video src="media/videos/vid_product_input.mp4" controls playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(245,158,11,0.3); background: #000;"></video>
+    </div>
+    <!-- Output video -->
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #6ee7b7; margin-bottom: 6px;">输出视频 / Output</div>
+      <video src="media/videos/vid_product_output.mp4" controls playsinline style="width: 100%; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); background: #000;"></video>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Seedance 2.0 Platform Overview -->
+<div class="slide slide-title" id="slide-7">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <span class="badge badge-purple">Volcengine Ark Platform</span>
+  <h1 style="font-size: 64px;">Seedance 2.0</h1>
+  <p class="subtitle" style="font-size: 22px; max-width: 800px;">Production-ready AI video generation with native audio, multi-reference composition, draft preview, and flexible deployment.</p>
+  <div class="spec-grid" style="max-width: 1000px; grid-template-columns: repeat(5, 1fr); margin-top: 24px;">
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">5</div>
+      <div class="spec-label">Models</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">1080p</div>
+      <div class="spec-label">Resolution</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">12s</div>
+      <div class="spec-label">Duration</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">6</div>
+      <div class="spec-label">Audio Types</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">50%</div>
+      <div class="spec-label">Flex Savings</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Example 1 — Input + Prompt -->
+<div class="slide slide-demo" id="slide-8">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-amber">Demo 1 &mdash; Input</span>
+  <h2 style="margin-bottom: 24px;">有声视频生成 <span style="font-size: 24px; color: #64748b; font-weight: 400;">&mdash; 地铁站 &rarr; 中世纪教堂</span></h2>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">First Frame</div>
+      <img src="media/images/img_audio_video_input.png" alt="Girl reading in subway station">
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Prompt</div>
+      <div class="prompt-box">
+        <p class="prompt-text">一辆地铁轰隆隆驶过，书页和女孩的头发飞扬，镜头开始环绕着女孩360度旋转，周围的背景从地铁站渐渐转变为一个中世纪的教堂，西式幻想风格的音乐渐入。夹在女孩书中的几页信纸随风飞扬，在女孩的周身打着旋，随风而动的纸张降落时，女孩身处的环境已经彻底变成中世纪教堂的模样</p>
+      </div>
+      <p style="font-size: 20px; color: #64748b; margin-top: 20px; line-height: 1.6;">A girl reading in a subway station is transported to a medieval cathedral as the pages fly around her. Western fantasy-style music fades in.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Example 1 — Output -->
+<div class="slide slide-demo" id="slide-9">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-amber">Demo 1 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">有声视频生成 <span style="font-size: 24px; color: #64748b; font-weight: 400;">&mdash; 地铁站 &rarr; 中世纪教堂</span></h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-header">Generated Video with Audio</div>
+    <video src="media/videos/vid_audio_video1.mp4" controls playsinline style="width: 100%; max-width: 900px; max-height: 65vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #000;"></video>
+  </div>
+</div>
+
+<!-- SLIDE 10: Example 2 — Input + Prompt -->
+<div class="slide slide-demo" id="slide-10">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-green">Demo 2 &mdash; Input</span>
+  <h2 style="margin-bottom: 24px;">有声视频生成 <span style="font-size: 24px; color: #64748b; font-weight: 400;">&mdash; 京剧花旦唱腔</span></h2>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">First Frame</div>
+      <img src="media/images/img_audio_video_input2.png" alt="Beijing opera performer">
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Prompt</div>
+      <div class="prompt-box">
+        <p class="prompt-text">镜头围绕人物推镜头拉近，特写人物面部，她正在用京剧唱腔唱"月移花影，疑是玉人来"，唱词充满情感，唱腔充满传统京剧特有的韵味与技巧，完美体现了花旦角色的内心世界</p>
+      </div>
+      <p style="font-size: 20px; color: #64748b; margin-top: 20px; line-height: 1.6;">A Beijing opera performer sings a classic verse with authentic traditional vocal techniques. The camera pushes in for a close-up.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Example 2 — Output -->
+<div class="slide slide-demo" id="slide-11">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-green">Demo 2 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">有声视频生成 <span style="font-size: 24px; color: #64748b; font-weight: 400;">&mdash; 京剧花旦唱腔</span></h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-header">Generated Video with Audio</div>
+    <video src="media/videos/vid_audio_video2.mp4" controls playsinline style="width: 100%; max-width: 900px; max-height: 65vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #000;"></video>
+  </div>
+</div>
+
+<!-- SLIDE 12: Example 3 — Multi-Reference Input -->
+<div class="slide slide-demo" id="slide-12">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-cyan">Demo 3 &mdash; Input</span>
+  <h2 style="margin-bottom: 24px;">多参考图生视频</h2>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">Reference Images</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div>
+          <img src="media/images/ref_boy.jpg" alt="Boy with glasses" style="width:100%; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size: 16px; color: #a78bfa; text-align: center; margin-top: 8px;">[图1] 男生</p>
+        </div>
+        <div>
+          <img src="media/images/ref_corgi.png" alt="Corgi dog" style="width:100%; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size: 16px; color: #a78bfa; text-align: center; margin-top: 8px;">[图2] 柯基</p>
+        </div>
+        <div>
+          <img src="media/images/ref_grass.png" alt="Grass field" style="width:100%; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size: 16px; color: #a78bfa; text-align: center; margin-top: 8px;">[图3] 草坪</p>
+        </div>
+      </div>
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Prompt</div>
+      <div class="prompt-box">
+        <p class="prompt-text">[图1]戴着眼镜穿着蓝色T恤的男生和[图2]的柯基小狗，坐在[图3]的草坪上，视频卡通风格</p>
+      </div>
+      <p style="font-size: 20px; color: #64748b; margin-top: 20px; line-height: 1.6;">Upload multiple reference images. The model extracts features and style from each to generate a matching dynamic video.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: Example 3 — Multi-Reference Output -->
+<div class="slide slide-demo" id="slide-13">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-cyan">Demo 3 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">多参考图生视频</h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-header">Generated Video from Multiple References</div>
+    <video src="media/videos/vid_multi_ref_full.mp4" controls playsinline style="width: 100%; max-width: 900px; max-height: 65vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #000;"></video>
+  </div>
+</div>
+
+<!-- SLIDE 14: Example 4 — First/Last Frame Input -->
+<div class="slide slide-demo" id="slide-14">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-purple">Demo 4 &mdash; Input</span>
+  <h2 style="margin-bottom: 24px;">首尾帧生视频</h2>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">First &amp; Last Frame</div>
+      <img src="media/images/img_first_last_frame.jpg" alt="First and last frame keyframes">
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Prompt</div>
+      <div class="prompt-box">
+        <p class="prompt-text">360度环绕运镜</p>
+      </div>
+      <p style="font-size: 20px; color: #64748b; margin-top: 20px; line-height: 1.6;">Provide a start and end keyframe. The model intelligently generates smooth transition frames, producing coherent and fluid video content.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: Example 4 — First/Last Frame Output -->
+<div class="slide slide-demo" id="slide-15">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-purple">Demo 4 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">首尾帧生视频</h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-header">Generated Video from First &amp; Last Frame</div>
+    <video src="media/videos/vid_first_last_frame.mp4" controls playsinline style="width: 100%; max-width: 900px; max-height: 65vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #000;"></video>
+  </div>
+</div>
+
+<!-- SLIDE 16: Text-to-Video — Input -->
+<div class="slide slide-demo" id="slide-16">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-amber">Demo 5 &mdash; Input</span>
+  <h2 style="margin-bottom: 24px;">文生视频</h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <p style="font-size: 20px; color: #94a3b8; margin-bottom: 32px; max-width: 700px; text-align: center;">根据文本提示词直接生成视频，无需输入图片。结果具有较大的随机性，可以用于激发创作灵感。</p>
+    <div class="prompt-box" style="max-width: 800px; width: 100%;">
+      <div class="prompt-label">Prompt</div>
+      <p class="prompt-text">写实风格，晴朗的蓝天之下，一大片白色的雏菊花田，镜头逐渐拉近，最终定格在一朵雏菊花的特写上，花瓣上有几颗晶莹的露珠</p>
+    </div>
+    <p style="font-size: 20px; color: #64748b; margin-top: 24px; max-width: 700px; text-align: center; line-height: 1.6;">Realistic style: a vast white daisy field under blue skies. The camera slowly zooms in to a close-up of a single daisy with crystal-clear dewdrops on its petals.</p>
+  </div>
+</div>
+
+<!-- SLIDE 17: Text-to-Video — Output -->
+<div class="slide slide-demo" id="slide-17">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-amber">Demo 5 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">文生视频</h2>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-header">Generated Video from Text Prompt</div>
+    <video src="media/videos/vid_t2v_daisy.mp4" controls playsinline style="width: 100%; max-width: 900px; max-height: 65vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #000;"></video>
+  </div>
+</div>
+
+<!-- SLIDE 18: Video Parameters -->
+<div class="slide slide-feature" id="slide-18">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-cyan">Configuration</span>
+  <h2>设置视频输出规格</h2>
+  <p style="max-width: 800px; margin-bottom: 24px;">通过参数精确控制视频输出的各项规格。</p>
+  <div class="cards" style="grid-template-columns: repeat(4, 1fr); gap: 16px;">
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #a78bfa; margin-bottom: 8px;">resolution</div>
+      <p style="font-size: 17px;">480p / 720p / 1080p</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">分辨率</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #67e8f9; margin-bottom: 8px;">ratio</div>
+      <p style="font-size: 17px;">16:9 / 4:3 / 1:1 / 3:4 / 9:16 / 21:9</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">宽高比</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #fbbf24; margin-bottom: 8px;">duration</div>
+      <p style="font-size: 17px;">2 ~ 12 秒</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">视频时长</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #6ee7b7; margin-bottom: 8px;">seed</div>
+      <p style="font-size: 17px;">固定随机种子</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">可复现结果</p>
+    </div>
+  </div>
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #f472b6; margin-bottom: 8px;">frames</div>
+      <p style="font-size: 17px;">29 ~ 289 帧</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">25 + 4n 格式</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #c084fc; margin-bottom: 8px;">camera_fixed</div>
+      <p style="font-size: 17px;">true / false</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">是否固定摄像头</p>
+    </div>
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 28px; font-weight: 700; color: #fb923c; margin-bottom: 8px;">watermark</div>
+      <p style="font-size: 17px;">true / false</p>
+      <p style="font-size: 14px; color: #64748b; margin-top: 8px;">是否包含水印</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19: Prompt Tips -->
+<div class="slide slide-feature" id="slide-19">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-green">Best Practices</span>
+  <h2>提示词建议</h2>
+  <div class="cards" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 16px;">
+    <div class="card">
+      <h3 style="font-size: 22px;">提示词公式</h3>
+      <p style="font-size: 20px; color: #a78bfa; font-weight: 600; margin-top: 8px;">主体 + 运动，背景 + 运动，镜头 + 运动</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 22px;">简洁准确</h3>
+      <p style="font-size: 18px;">用简洁准确的自然语言描述你想要的效果</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 22px;">先生图再生视频</h3>
+      <p style="font-size: 18px;">有明确预期时，建议先用生图模型生成图片，再用图生视频</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 22px;">高清图片输入</h3>
+      <p style="font-size: 18px;">图生视频时请尽量上传高清高质量的图片，图片质量影响很大</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 22px;">具象优于抽象</h3>
+      <p style="font-size: 18px;">将抽象描述换成具象描述，删除不重要的部分，重要内容前置</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 22px;">文生视频的随机性</h3>
+      <p style="font-size: 18px;">文生视频结果随机性大，可以用于激发创作灵感</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20: Flex Mode -->
+<div class="slide slide-feature" id="slide-20">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-amber">Cost Optimization</span>
+  <h2>离线推理 (Flex Mode)</h2>
+  <p style="max-width: 800px; margin-bottom: 40px;">针对时延敏感度低的场景，一键切换至离线推理模式，<span class="highlight">价格仅为在线推理的 50%</span>。</p>
+  <div class="two-col" style="max-width: 1000px;">
+    <div>
+      <div class="spec-grid" style="grid-template-columns: 1fr;">
+        <div class="spec-item">
+          <div class="spec-value">50%</div>
+          <div class="spec-label">Cost Reduction</div>
+        </div>
+      </div>
+      <div class="prompt-box" style="margin-top: 24px;">
+        <div class="prompt-label">Configuration</div>
+        <p class="prompt-text" style="font-size: 20px; font-family: monospace; color: #a78bfa;">"service_tier": "flex"</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h3 style="color: #67e8f9;">&#9432; 适用场景</h3>
+        <p style="font-size: 18px;">推理时延敏感度低（小时级响应）的场景</p>
+      </div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h3 style="color: #fbbf24;">&#9888; 注意事项</h3>
+        <p style="font-size: 18px;">根据业务场景设置合适的超时时间，超时后任务将自动终止</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #6ee7b7;">&#128200; TPD 限流</h3>
+        <p style="font-size: 18px;">Pro: 5000亿 TPD &bull; Lite: 2500亿 TPD</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21: Draft Mode — Input -->
+<div class="slide slide-demo" id="slide-21">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-purple">Demo 6 &mdash; Input</span>
+  <h2 style="margin-bottom: 16px;">Draft 样片模式 <span style="font-size: 20px; color: #64748b; font-weight: 400;">&mdash; Seedance 1.5 Pro Only</span></h2>
+  <p style="font-size: 20px; color: #94a3b8; margin-bottom: 24px; max-width: 900px;">低成本验证场景结构、镜头调度、主体动作与 Prompt 意图。确认后再生成高质量正式视频。</p>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">First Frame</div>
+      <img src="media/images/img_camera_fixed_ref.png" alt="Fox girl reference image">
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Prompt</div>
+      <div class="prompt-box">
+        <p class="prompt-text">女孩抱着狐狸，女孩睁开眼，温柔地看向镜头，狐狸友善地抱着，镜头缓缓拉出，女孩的头发被风吹动，可以听到风声</p>
+      </div>
+      <div class="card" style="margin-top: 20px; padding: 16px 20px;">
+        <p style="font-size: 18px; color: #a78bfa; font-weight: 600;">Draft 成本 = 正常视频 &times; 0.6</p>
+        <p style="font-size: 16px; color: #94a3b8; margin-top: 8px;">设置 <code style="background: rgba(124,58,237,0.15); padding: 2px 8px; border-radius: 4px; color: #a78bfa;">"draft": true</code> 开启样片模式</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22: Draft Mode — Output Comparison -->
+<div class="slide slide-demo" id="slide-22">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-purple">Demo 6 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">Draft 样片模式</h2>
+  <div class="demo-grid">
+    <div class="demo-output" style="text-align: center;">
+      <div class="col-header">Draft 视频 (Preview)</div>
+      <video src="media/videos/vid_camera_fixed_on.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(124,58,237,0.3); background: #000;"></video>
+      <p style="font-size: 18px; color: #a78bfa; margin-top: 12px;">低成本快速验证</p>
+    </div>
+    <div class="demo-output" style="text-align: center;">
+      <div class="col-header">正式视频 (Final)</div>
+      <video src="media/videos/vid_camera_fixed_off.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(16,185,129,0.3); background: #000;"></video>
+      <p style="font-size: 18px; color: #6ee7b7; margin-top: 12px;">复用 Draft 参数生成高质量视频</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23: Continuous Video — Input -->
+<div class="slide slide-demo" id="slide-23">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-cyan">Demo 7 &mdash; Input</span>
+  <h2 style="margin-bottom: 16px;">连续视频生成</h2>
+  <p style="font-size: 20px; color: #94a3b8; margin-bottom: 24px; max-width: 900px;">使用前一个视频的尾帧作为后一个视频的首帧，循环生成多个连续视频，再用 FFmpeg 拼接成完整长视频。</p>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+    <div class="prompt-box" style="border-color: rgba(124,58,237,0.3);">
+      <div class="prompt-label" style="color: #a78bfa;">Prompt 1</div>
+      <p style="font-size: 18px; color: #cbd5e1; line-height: 1.6;">女孩抱着狐狸，女孩睁开眼，温柔地看向镜头，狐狸友善地抱着，镜头缓缓拉出，女孩的头发被风吹动</p>
+    </div>
+    <div class="prompt-box" style="border-color: rgba(6,182,212,0.3); border-left-color: #06b6d4;">
+      <div class="prompt-label" style="color: #67e8f9;">Prompt 2</div>
+      <p style="font-size: 18px; color: #cbd5e1; line-height: 1.6;">女孩和狐狸在草地上奔跑，阳光明媚，女孩的笑容灿烂，狐狸欢快地跳跃</p>
+    </div>
+    <div class="prompt-box" style="border-color: rgba(245,158,11,0.3); border-left-color: #f59e0b;">
+      <div class="prompt-label" style="color: #fbbf24;">Prompt 3</div>
+      <p style="font-size: 18px; color: #cbd5e1; line-height: 1.6;">女孩和狐狸坐在树下休息，女孩轻轻抚摸狐狸的毛发，狐狸温顺地趴在女孩腿上</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px;">
+    <div style="background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.3); border-radius: 12px; padding: 12px 24px; font-size: 18px; color: #a78bfa;">Video 1</div>
+    <div style="font-size: 24px; color: #64748b;">&#8594; 尾帧 &#8594;</div>
+    <div style="background: rgba(6,182,212,0.2); border: 1px solid rgba(6,182,212,0.3); border-radius: 12px; padding: 12px 24px; font-size: 18px; color: #67e8f9;">Video 2</div>
+    <div style="font-size: 24px; color: #64748b;">&#8594; 尾帧 &#8594;</div>
+    <div style="background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 12px 24px; font-size: 18px; color: #fbbf24;">Video 3</div>
+    <div style="font-size: 24px; color: #64748b;">&#8594; FFmpeg &#8594;</div>
+    <div style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 12px 24px; font-size: 18px; color: #6ee7b7; font-weight: 600;">Long Video</div>
+  </div>
+</div>
+
+<!-- SLIDE 24: Continuous Video — Output -->
+<div class="slide slide-demo" id="slide-24">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-cyan">Demo 7 &mdash; Output</span>
+  <h2 style="margin-bottom: 24px;">连续视频生成</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; flex: 1; align-items: center;">
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #a78bfa;">Output 1</div>
+      <video src="media/videos/vid_watermark_none.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(124,58,237,0.2); background: #000;"></video>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #67e8f9;">Output 2</div>
+      <video src="media/videos/vid_watermark_bytedance.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(6,182,212,0.2); background: #000;"></video>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #fbbf24;">Output 3</div>
+      <video src="media/videos/vid_watermark_custom.mp4" controls playsinline style="width: 100%; border-radius: 14px; border: 1px solid rgba(245,158,11,0.2); background: #000;"></video>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25: Webhook -->
+<div class="slide slide-feature" id="slide-25">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-green">Integration</span>
+  <h2>Webhook 通知</h2>
+  <p style="max-width: 800px; margin-bottom: 32px;">通过 <span class="highlight">callback_url</span> 参数指定回调地址，当任务状态变化时自动接收 POST 通知。</p>
+  <div class="two-col" style="max-width: 1000px;">
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="color: #6ee7b7; font-size: 20px;">&#9989; 使用方式</h3>
+        <p style="font-size: 18px; margin-top: 12px;">创建任务时设置 <code style="background: rgba(16,185,129,0.15); padding: 2px 8px; border-radius: 4px; color: #6ee7b7;">callback_url</code> 参数</p>
+      </div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="color: #67e8f9; font-size: 20px;">&#128232; 通知内容</h3>
+        <p style="font-size: 18px; margin-top: 12px;">与查询任务 API 的返回体一致</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #fbbf24; font-size: 20px;">&#9888; 前置条件</h3>
+        <p style="font-size: 18px; margin-top: 12px;">需自行搭建公网可访问的 Web Server</p>
+      </div>
+    </div>
+    <div>
+      <div class="prompt-box" style="border-color: rgba(16,185,129,0.3); border-left-color: #10b981;">
+        <div class="prompt-label" style="color: #6ee7b7;">Webhook Payload</div>
+        <pre style="font-size: 17px; color: #cbd5e1; line-height: 1.7; font-family: monospace; white-space: pre-wrap;">{
+  "id": "cgt-2025****",
+  "model": "doubao-seedance-...",
+  "status": "succeeded",
+  "created_at": 1765434920,
+  "updated_at": 1765434920,
+  "service_tier": "default"
+}</pre>
+      </div>
+      <p style="font-size: 16px; color: #64748b; margin-top: 16px;">Status: queued &rarr; running &rarr; succeeded / failed / expired</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26: Usage Limits -->
+<div class="slide slide-feature" id="slide-26">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-amber">Limits</span>
+  <h2>使用限制</h2>
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 16px;">
+    <div class="card" style="border-color: rgba(245,158,11,0.3);">
+      <div class="card-icon" style="font-size: 48px;">&#9201;</div>
+      <h3 style="font-size: 22px; color: #fbbf24;">保存时间</h3>
+      <div class="spec-value" style="font-size: 56px; margin: 16px 0;">24h</div>
+      <p style="font-size: 18px;">任务数据（状态、URL 等）仅保留 24 小时，超时后自动清除。请务必及时保存生成的视频。</p>
+    </div>
+    <div class="card" style="border-color: rgba(124,58,237,0.3);">
+      <div class="card-icon" style="font-size: 48px;">&#128640;</div>
+      <h3 style="font-size: 22px; color: #a78bfa;">在线推理限流 (Default)</h3>
+      <ul style="list-style: none; margin-top: 16px;">
+        <li style="font-size: 18px; margin-bottom: 12px; color: #cbd5e1;"><span class="highlight">RPM</span> &mdash; 每分钟创建任务数上限</li>
+        <li style="font-size: 18px; margin-bottom: 12px; color: #cbd5e1;"><span class="highlight">并发数</span> &mdash; 同时处理任务数上限</li>
+      </ul>
+      <p style="font-size: 16px; color: #64748b; margin-top: 12px;">Pro: RPM 600 / 并发 10<br>Lite: RPM 300 / 并发 5</p>
+    </div>
+    <div class="card" style="border-color: rgba(6,182,212,0.3);">
+      <div class="card-icon" style="font-size: 48px;">&#128338;</div>
+      <h3 style="font-size: 22px; color: #67e8f9;">离线推理限流 (Flex)</h3>
+      <ul style="list-style: none; margin-top: 16px;">
+        <li style="font-size: 18px; margin-bottom: 12px; color: #cbd5e1;"><span class="highlight-cyan">TPD</span> &mdash; 每日 Token 总量上限</li>
+      </ul>
+      <p style="font-size: 16px; color: #64748b; margin-top: 12px;">Pro: 5000亿 TPD<br>Lite: 2500亿 TPD</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 27: Aspect Ratio Cropping — Input -->
+<div class="slide slide-demo" id="slide-27">
+  <div class="glow glow-2"></div>
+  <span class="badge badge-green">Demo 8 &mdash; Input</span>
+  <h2 style="margin-bottom: 16px;">图片裁剪规则</h2>
+  <p style="font-size: 20px; color: #94a3b8; margin-bottom: 24px; max-width: 900px;">当指定的视频宽高比与上传图片不一致时，方舟会对图片进行<span class="highlight">居中裁剪</span>。建议 ratio 与图片宽高比尽可能接近。</p>
+  <div class="demo-grid">
+    <div class="demo-input">
+      <div class="col-header">Input Image (16:9)</div>
+      <img src="media/images/img_aspect_ratio_input.png" alt="16:9 input image for aspect ratio demo">
+    </div>
+    <div class="demo-input">
+      <div class="col-header">Cropping Logic</div>
+      <div class="card" style="margin-bottom: 16px;">
+        <p style="font-size: 18px; color: #cbd5e1; line-height: 1.7;">
+          <span style="color: #a78bfa; font-weight: 600;">1.</span> 比较 Ratio<sub>原始</sub> vs Ratio<sub>目标</sub><br>
+          <span style="color: #67e8f9; font-weight: 600;">2.</span> 原始太高 &#8594; 以宽度为基准裁剪<br>
+          <span style="color: #fbbf24; font-weight: 600;">3.</span> 原始太宽 &#8594; 以高度为基准裁剪<br>
+          <span style="color: #6ee7b7; font-weight: 600;">4.</span> 裁剪区域始终居中，无黑边
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+        <div style="background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #a78bfa;">21:9</div>
+        </div>
+        <div style="background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #67e8f9;">16:9</div>
+        </div>
+        <div style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #fbbf24;">4:3</div>
+        </div>
+        <div style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #6ee7b7;">1:1</div>
+        </div>
+        <div style="background: rgba(244,114,182,0.1); border: 1px solid rgba(244,114,182,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #f472b6;">3:4</div>
+        </div>
+        <div style="background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #c084fc;">9:16</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28: Aspect Ratio Cropping — Output (wide ratios) -->
+<div class="slide slide-demo" id="slide-28">
+  <div class="glow glow-3"></div>
+  <span class="badge badge-green">Demo 8 &mdash; Output</span>
+  <h2 style="margin-bottom: 16px;">图片裁剪规则 &mdash; 横向比例</h2>
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 32px;">
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #a78bfa; margin-bottom: 8px;">21:9</div>
+      <div style="width: 46vw; aspect-ratio: 21/9; border-radius: 10px; border: 1px solid rgba(124,58,237,0.3); overflow: hidden;">
+        <video src="media/videos/vid_aspect_21_9.mp4" controls playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #67e8f9; margin-bottom: 8px;">16:9</div>
+      <div style="width: 34vw; aspect-ratio: 16/9; border-radius: 10px; border: 1px solid rgba(6,182,212,0.3); overflow: hidden;">
+        <video src="media/videos/vid_aspect_16_9.mp4" controls playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #fbbf24; margin-bottom: 8px;">4:3</div>
+      <div style="height: 50vh; aspect-ratio: 4/3; border-radius: 10px; border: 1px solid rgba(245,158,11,0.3); overflow: hidden;">
+        <video src="media/videos/vid_aspect_4_3.mp4" controls playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29: Aspect Ratio Cropping — Output (square & tall ratios) -->
+<div class="slide slide-demo" id="slide-29">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-green">Demo 8 &mdash; Output</span>
+  <h2 style="margin-bottom: 16px;">图片裁剪规则 &mdash; 方形与纵向比例</h2>
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 40px;">
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #6ee7b7; margin-bottom: 8px;">1:1</div>
+      <video src="media/videos/vid_aspect_1_1.mp4" controls playsinline style="height: 55vh; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); background: #000;"></video>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #f472b6; margin-bottom: 8px;">3:4</div>
+      <video src="media/videos/vid_aspect_3_4.mp4" controls playsinline style="height: 55vh; border-radius: 10px; border: 1px solid rgba(244,114,182,0.3); background: #000;"></video>
+    </div>
+    <div style="text-align: center;">
+      <div class="col-header" style="color: #c084fc; margin-bottom: 8px;">9:16</div>
+      <video src="media/videos/vid_aspect_9_16.mp4" controls playsinline style="height: 55vh; border-radius: 10px; border: 1px solid rgba(192,132,252,0.3); background: #000;"></video>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30: Title -->
+<div class="slide slide-title" id="slide-30">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <span class="badge badge-purple">2014 &mdash; 2025</span>
+  <h1 style="font-size: 72px;">The AI Revolution<br>in Film &amp; Video</h1>
+  <p class="subtitle" style="font-size: 26px; max-width: 800px;">From early neural networks to production-ready AI filmmaking &mdash; how a decade of breakthroughs in generative AI is transforming the way we create visual content.</p>
+  <div class="spec-grid" style="max-width: 900px; grid-template-columns: repeat(4, 1fr); margin-top: 32px;">
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 40px;">2014</div>
+      <div class="spec-label">GANs Invented</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 40px;">2017</div>
+      <div class="spec-label">Transformer</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 40px;">2022</div>
+      <div class="spec-label">ChatGPT</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 40px;">2025</div>
+      <div class="spec-label">Seedance 2.0</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31: Timeline — From Early AI to Transformers -->
+<div class="slide slide-feature" id="slide-31">
+  <div class="glow glow-1"></div>
+  <span class="badge badge-cyan">Timeline</span>
+  <h2>The Road to AI Video</h2>
+  <p style="max-width: 800px; margin-bottom: 28px;">A decade of compounding breakthroughs &mdash; each milestone unlocked the next.</p>
+  <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; position: relative;">
+    <!-- Connecting line -->
+    <div style="position: absolute; top: 50px; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, #7c3aed, #06b6d4, #f59e0b, #10b981, #f472b6); opacity: 0.4; z-index: 0;"></div>
+    <div class="card" style="text-align: center; position: relative; z-index: 1; border-color: rgba(124,58,237,0.3);">
+      <div style="font-size: 36px; font-weight: 800; color: #a78bfa;">2014</div>
+      <h3 style="font-size: 20px; margin-top: 12px;">GANs</h3>
+      <p style="font-size: 16px; margin-top: 8px;">Goodfellow et al. introduce Generative Adversarial Networks &mdash; machines learn to generate images by competing against themselves.</p>
+    </div>
+    <div class="card" style="text-align: center; position: relative; z-index: 1; border-color: rgba(6,182,212,0.3);">
+      <div style="font-size: 36px; font-weight: 800; color: #67e8f9;">2017</div>
+      <h3 style="font-size: 20px; margin-top: 12px;">Transformer</h3>
+      <p style="font-size: 16px; margin-top: 8px;">"Attention Is All You Need" redefines sequence modeling. The architecture behind GPT, DALL-E, and every modern AI model.</p>
+    </div>
+    <div class="card" style="text-align: center; position: relative; z-index: 1; border-color: rgba(245,158,11,0.3);">
+      <div style="font-size: 36px; font-weight: 800; color: #fbbf24;">2020</div>
+      <h3 style="font-size: 20px; margin-top: 12px;">DALL-E &amp; Diffusion</h3>
+      <p style="font-size: 16px; margin-top: 8px;">OpenAI's DALL-E generates images from text. Denoising diffusion models emerge as a powerful alternative to GANs.</p>
+    </div>
+    <div class="card" style="text-align: center; position: relative; z-index: 1; border-color: rgba(16,185,129,0.3);">
+      <div style="font-size: 36px; font-weight: 800; color: #6ee7b7;">2022</div>
+      <h3 style="font-size: 20px; margin-top: 12px;">ChatGPT &amp; Stable Diffusion</h3>
+      <p style="font-size: 16px; margin-top: 8px;">Generative AI goes mainstream. ChatGPT proves the paradigm; Stable Diffusion democratizes image generation.</p>
+    </div>
+    <div class="card" style="text-align: center; position: relative; z-index: 1; border-color: rgba(244,114,182,0.3);">
+      <div style="font-size: 36px; font-weight: 800; color: #f472b6;">2023</div>
+      <h3 style="font-size: 20px; margin-top: 12px;">Video Diffusion</h3>
+      <p style="font-size: 16px; margin-top: 8px;">Diffusion models extend to video. Runway Gen-2, Pika, and research breakthroughs bring AI filmmaking within reach.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32: The Video Generation Era -->
+<div class="slide slide-feature" id="slide-32">
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <span class="badge badge-amber">2024 &mdash; 2025</span>
+  <h2>The Video Generation Era</h2>
+  <p style="max-width: 800px; margin-bottom: 28px;">Production-quality AI video goes from research demo to studio tool.</p>
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+    <div class="card" style="border-color: rgba(255,255,255,0.1);">
+      <div style="font-size: 14px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Feb 2024</div>
+      <h3 style="font-size: 22px; margin-top: 12px;">Sora</h3>
+      <p style="font-size: 16px; margin-top: 8px; color: #94a3b8;">OpenAI reveals Sora &mdash; 60s photorealistic video from text. A "ChatGPT moment" for video AI.</p>
+    </div>
+    <div class="card" style="border-color: rgba(255,255,255,0.1);">
+      <div style="font-size: 14px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Mid 2024</div>
+      <h3 style="font-size: 22px; margin-top: 12px;">Runway Gen-3 &amp; Kling</h3>
+      <p style="font-size: 16px; margin-top: 8px; color: #94a3b8;">Commercial AI video tools mature. Runway Gen-3 Alpha ships; Kuaishou launches Kling with motion control.</p>
+    </div>
+    <div class="card" style="border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.05);">
+      <div style="font-size: 14px; font-weight: 600; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px;">2025</div>
+      <h3 style="font-size: 22px; margin-top: 12px; color: #a78bfa;">Seedance 2.0</h3>
+      <p style="font-size: 16px; margin-top: 8px; color: #cbd5e1;">ByteDance ships Seedance 2.0 &mdash; audio-visual co-generation, multi-reference, draft mode, 1080p, up to 12s.</p>
+      <span class="badge badge-purple" style="margin-top: 12px; margin-bottom: 0; font-size: 10px;">Today's Focus</span>
+    </div>
+    <div class="card" style="border-color: rgba(6,182,212,0.3); border-style: dashed;">
+      <div style="font-size: 14px; font-weight: 600; color: #67e8f9; text-transform: uppercase; letter-spacing: 1px;">Future</div>
+      <h3 style="font-size: 22px; margin-top: 12px; color: #67e8f9;">What's Next?</h3>
+      <p style="font-size: 16px; margin-top: 8px; color: #94a3b8;">Real-time generation, interactive AI directors, full-length films, personalized content at scale &mdash; the gap between imagination and screen approaches zero.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33: End -->
+<div class="slide slide-end" id="slide-33">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <h1 style="font-size: 80px;">Seedance</h1>
+  <p class="subtitle" style="font-size: 28px;">AI Video Generation &mdash; Powered by Volcengine Ark</p>
+  <div class="spec-grid" style="max-width: 900px; grid-template-columns: repeat(4, 1fr); margin-top: 40px;">
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">5</div>
+      <div class="spec-label">Models</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">1080p</div>
+      <div class="spec-label">Max Resolution</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">12s</div>
+      <div class="spec-label">Max Duration</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-value" style="font-size: 36px;">6</div>
+      <div class="spec-label">Audio Types</div>
+    </div>
+  </div>
+  <p style="margin-top: 48px; font-size: 20px; color: #64748b;">docs: volcengine.com/docs/82379 &nbsp;&bull;&nbsp; console: console.volcengine.com/ark</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">&larr;</button>
+  <button onclick="nextSlide()">&rarr;</button>
+</div>
+<div class="progress" id="progress"></div>
+<div class="slide-number" id="slide-number">1 / 33</div>
+
+<script>
+  // YouTube embed works over http/https; fallback to thumbnail for file://
+  (function() {
+    var isHttp = location.protocol === 'http:' || location.protocol === 'https:';
+    var embed = document.getElementById('yt-embed');
+    var fallback = document.getElementById('yt-fallback');
+    if (isHttp) { embed.style.display = 'block'; } else { fallback.style.display = 'block'; }
+  })();
+
+  let current = 1;
+  const total = 33;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('progress').style.width = (n / total * 100) + '%';
+    document.getElementById('slide-number').textContent = n + ' / ' + total;
+  }
+
+  function nextSlide() { if (current < total) { current++; showSlide(current); } }
+  function prevSlide() { if (current > 1) { current--; showSlide(current); } }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  });
+</script>
+
+</body>
+</html>
