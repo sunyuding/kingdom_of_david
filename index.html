@@ -812,13 +812,30 @@
   <span class="badge badge-purple">Feb 2025</span>
   <h2 style="font-size: 44px;">Vibe Coding</h2>
   <p style="max-width: 900px; margin-bottom: 12px;">"Give in to the vibes, forget the code exists." &mdash; <span class="highlight">Andrej Karpathy</span> coins a new paradigm: describe what you want in natural language, and AI writes the code.</p>
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <img src="media/images/Feishu Docs - Image.png" alt="Vibe Coding Origin - Andrej Karpathy" style="width: 100%; max-width: 1100px; max-height: 58vh; object-fit: contain; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);">
+  <div style="display: flex; align-items: center; gap: 24px; max-width: 1300px; flex: 1;">
+    <div style="flex: 1;">
+      <img src="media/images/Feishu Docs - Image.png" alt="Vibe Coding Origin - Andrej Karpathy" style="width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);">
+    </div>
+    <div style="flex-shrink: 0; width: 420px;">
+      <img src="media/images/Feishu Docs - Image (1).png" alt="Andrej Karpathy vibe coding tweet" style="width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);">
+    </div>
   </div>
 </div>
 
-<!-- SLIDE 23: Super IC in the AI Era -->
+<!-- SLIDE 23: Three Eras of AI Coding Tools -->
 <div class="slide slide-feature" id="slide-23">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <span class="badge badge-cyan">Evolution</span>
+  <h2 style="font-size: 42px;">Three Eras of AI Coding Tools</h2>
+  <p style="max-width: 900px; margin-bottom: 12px;">From code completion to autonomous AI software engineers &mdash; <span class="highlight">local development &rarr; collaborative cloud agents</span>.</p>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <img src="media/images/Feishu Docs - Image (2).png" alt="Three Eras of AI Coding Tools" style="width: 100%; max-width: 1200px; max-height: 58vh; object-fit: contain; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);">
+  </div>
+</div>
+
+<!-- SLIDE 24: Super IC in the AI Era -->
+<div class="slide slide-feature" id="slide-24">
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
   <div class="glow glow-3"></div>
@@ -852,7 +869,7 @@
   <button onclick="nextSlide()">&rarr;</button>
 </div>
 <div class="progress" id="progress"></div>
-<div class="slide-number" id="slide-number">1 / 23</div>
+<div class="slide-number" id="slide-number">1 / 24</div>
 
 <script>
   // YouTube embed works over http/https; fallback to thumbnail for file://
@@ -864,7 +881,7 @@
   })();
 
   let current = 1;
-  const total = 23;
+  const total = 24;
 
   function showSlide(n) {
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
