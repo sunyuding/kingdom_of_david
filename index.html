@@ -723,8 +723,111 @@
   <h2 style="font-size: 44px;">Transformer: The Revolutionary Architecture</h2>
   <p style="max-width: 800px; margin-bottom: 24px;">The single most influential architecture in modern AI &mdash; powering everything from ChatGPT to DALL-E to Sora to <span class="highlight">Seedance 2.0</span>.</p>
   <div style="display: flex; align-items: flex-start; gap: 40px; max-width: 1100px;">
-    <div style="flex-shrink: 0; width: 380px;">
-      <img src="media/images/1_tb9TT-mwFn1WPzkkbjoMCQ.png" alt="Transformer architecture diagram" style="width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #fff;">
+    <div style="flex-shrink: 0; width: 400px;">
+      <svg viewBox="0 0 520 720" xmlns="http://www.w3.org/2000/svg" style="width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6);">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#94a3b8"/></marker>
+        </defs>
+        <!-- Labels -->
+        <text x="145" y="710" text-anchor="middle" fill="#cbd5e1" font-size="13" font-family="system-ui">Inputs</text>
+        <text x="375" y="710" text-anchor="middle" fill="#cbd5e1" font-size="13" font-family="system-ui">Outputs (shifted right)</text>
+        <!-- Input/Output Embedding -->
+        <rect x="85" y="665" width="120" height="30" rx="4" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="1"/>
+        <text x="145" y="684" text-anchor="middle" fill="#f9a8d4" font-size="11" font-family="system-ui">Input Embedding</text>
+        <rect x="315" y="665" width="120" height="30" rx="4" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="1"/>
+        <text x="375" y="684" text-anchor="middle" fill="#f9a8d4" font-size="11" font-family="system-ui">Output Embedding</text>
+        <!-- Positional Encoding symbols -->
+        <circle cx="70" cy="635" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <text x="70" y="639" text-anchor="middle" fill="#94a3b8" font-size="11">~</text>
+        <circle cx="90" cy="635" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <text x="90" y="639" text-anchor="middle" fill="#94a3b8" font-size="12">+</text>
+        <text x="50" y="620" fill="#94a3b8" font-size="9" font-family="system-ui">Positional</text>
+        <text x="48" y="630" fill="#94a3b8" font-size="9" font-family="system-ui">Encoding</text>
+        <circle cx="430" cy="635" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <text x="430" y="639" text-anchor="middle" fill="#94a3b8" font-size="11">~</text>
+        <circle cx="450" cy="635" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <text x="450" y="639" text-anchor="middle" fill="#94a3b8" font-size="12">+</text>
+        <text x="460" y="620" fill="#94a3b8" font-size="9" font-family="system-ui">Positional</text>
+        <text x="458" y="630" fill="#94a3b8" font-size="9" font-family="system-ui">Encoding</text>
+        <!-- Arrows: input to embedding -->
+        <line x1="145" y1="697" x2="145" y2="665" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="697" x2="375" y2="665" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- Arrows: embedding to encoder/decoder -->
+        <line x1="145" y1="635" x2="145" y2="600" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="635" x2="375" y2="600" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- ENCODER block -->
+        <rect x="55" y="370" width="180" height="230" rx="8" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="1.5"/>
+        <text x="30" y="490" fill="#94a3b8" font-size="13" font-family="system-ui" text-anchor="middle">N&times;</text>
+        <!-- Encoder: Multi-Head Attention -->
+        <rect x="80" y="540" width="130" height="35" rx="4" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="145" y="555" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Multi-Head</text>
+        <text x="145" y="567" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Attention</text>
+        <!-- Encoder: Add & Norm 1 -->
+        <rect x="80" y="495" width="130" height="30" rx="4" fill="rgba(250,204,21,0.08)" stroke="rgba(250,204,21,0.4)" stroke-width="1"/>
+        <text x="145" y="514" text-anchor="middle" fill="#fef08a" font-size="10" font-family="system-ui">Add &amp; Norm</text>
+        <!-- Encoder: Feed Forward -->
+        <rect x="80" y="445" width="130" height="35" rx="4" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1"/>
+        <text x="145" y="460" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="system-ui">Feed</text>
+        <text x="145" y="472" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="system-ui">Forward</text>
+        <!-- Encoder: Add & Norm 2 -->
+        <rect x="80" y="400" width="130" height="30" rx="4" fill="rgba(250,204,21,0.08)" stroke="rgba(250,204,21,0.4)" stroke-width="1"/>
+        <text x="145" y="419" text-anchor="middle" fill="#fef08a" font-size="10" font-family="system-ui">Add &amp; Norm</text>
+        <!-- Encoder arrows -->
+        <line x1="145" y1="540" x2="145" y2="525" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="145" y1="495" x2="145" y2="480" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="145" y1="445" x2="145" y2="430" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- Encoder residual connections -->
+        <path d="M 215 558 L 225 558 L 225 510 L 215 510" fill="none" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <path d="M 215 462 L 225 462 L 225 415 L 215 415" fill="none" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- DECODER block -->
+        <rect x="285" y="240" width="180" height="360" rx="8" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="1.5"/>
+        <text x="485" y="420" fill="#94a3b8" font-size="13" font-family="system-ui" text-anchor="middle">N&times;</text>
+        <!-- Decoder: Masked Multi-Head Attention -->
+        <rect x="310" y="540" width="130" height="35" rx="4" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="375" y="553" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Masked Multi-Head</text>
+        <text x="375" y="565" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Attention</text>
+        <!-- Decoder: Add & Norm 1 -->
+        <rect x="310" y="495" width="130" height="30" rx="4" fill="rgba(250,204,21,0.08)" stroke="rgba(250,204,21,0.4)" stroke-width="1"/>
+        <text x="375" y="514" text-anchor="middle" fill="#fef08a" font-size="10" font-family="system-ui">Add &amp; Norm</text>
+        <!-- Decoder: Multi-Head Attention -->
+        <rect x="310" y="440" width="130" height="35" rx="4" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="375" y="455" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Multi-Head</text>
+        <text x="375" y="467" text-anchor="middle" fill="#fde68a" font-size="10" font-family="system-ui">Attention</text>
+        <!-- Decoder: Add & Norm 2 -->
+        <rect x="310" y="395" width="130" height="30" rx="4" fill="rgba(250,204,21,0.08)" stroke="rgba(250,204,21,0.4)" stroke-width="1"/>
+        <text x="375" y="414" text-anchor="middle" fill="#fef08a" font-size="10" font-family="system-ui">Add &amp; Norm</text>
+        <!-- Decoder: Feed Forward -->
+        <rect x="310" y="345" width="130" height="35" rx="4" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1"/>
+        <text x="375" y="360" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="system-ui">Feed</text>
+        <text x="375" y="372" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="system-ui">Forward</text>
+        <!-- Decoder: Add & Norm 3 -->
+        <rect x="310" y="295" width="130" height="30" rx="4" fill="rgba(250,204,21,0.08)" stroke="rgba(250,204,21,0.4)" stroke-width="1"/>
+        <text x="375" y="314" text-anchor="middle" fill="#fef08a" font-size="10" font-family="system-ui">Add &amp; Norm</text>
+        <!-- Decoder arrows -->
+        <line x1="375" y1="540" x2="375" y2="525" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="495" x2="375" y2="475" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="440" x2="375" y2="425" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="395" x2="375" y2="380" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="345" x2="375" y2="325" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- Decoder residual connections -->
+        <path d="M 445 558 L 455 558 L 455 510 L 445 510" fill="none" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <path d="M 445 457 L 455 457 L 455 410 L 445 410" fill="none" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <path d="M 445 362 L 455 362 L 455 310 L 445 310" fill="none" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- Cross-attention arrow: encoder to decoder -->
+        <path d="M 145 390 L 145 380 L 300 380 L 300 457 L 310 457" fill="none" stroke="#67e8f9" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="4 2"/>
+        <!-- Linear layer -->
+        <rect x="325" y="220" width="100" height="30" rx="4" fill="rgba(165,180,252,0.12)" stroke="#a5b4fc" stroke-width="1"/>
+        <text x="375" y="239" text-anchor="middle" fill="#c7d2fe" font-size="11" font-family="system-ui">Linear</text>
+        <!-- Softmax -->
+        <rect x="325" y="170" width="100" height="30" rx="4" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1"/>
+        <text x="375" y="189" text-anchor="middle" fill="#86efac" font-size="11" font-family="system-ui">Softmax</text>
+        <!-- Top arrows -->
+        <line x1="375" y1="295" x2="375" y2="250" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="220" x2="375" y2="200" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="375" y1="170" x2="375" y2="150" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- Output Probabilities -->
+        <text x="375" y="140" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600" font-family="system-ui">Output Probabilities</text>
+      </svg>
     </div>
     <div style="flex: 1;">
       <div class="card" style="margin-bottom: 16px; border-color: rgba(6,182,212,0.3);">
