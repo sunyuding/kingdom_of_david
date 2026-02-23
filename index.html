@@ -715,8 +715,40 @@
   </div>
 </div>
 
-<!-- SLIDE 17: The Video Generation Era -->
+<!-- SLIDE 17: Transformer — The Revolutionary Architecture -->
 <div class="slide slide-feature" id="slide-17">
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <span class="badge badge-cyan">2017 &mdash; Turning Point</span>
+  <h2 style="font-size: 44px;">Transformer: The Revolutionary Architecture</h2>
+  <p style="max-width: 800px; margin-bottom: 24px;">The single most influential architecture in modern AI &mdash; powering everything from ChatGPT to DALL-E to Sora to <span class="highlight">Seedance 2.0</span>.</p>
+  <div style="display: flex; align-items: flex-start; gap: 40px; max-width: 1100px;">
+    <div style="flex-shrink: 0; width: 380px;">
+      <img src="media/images/1_tb9TT-mwFn1WPzkkbjoMCQ.png" alt="Transformer architecture diagram" style="width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #fff;">
+    </div>
+    <div style="flex: 1;">
+      <div class="card" style="margin-bottom: 16px; border-color: rgba(6,182,212,0.3);">
+        <h3 style="color: #67e8f9; font-size: 20px;">Self-Attention Mechanism</h3>
+        <p style="font-size: 17px; margin-top: 8px;">Every token attends to every other token in parallel &mdash; capturing long-range dependencies that RNNs and CNNs could not.</p>
+      </div>
+      <div class="card" style="margin-bottom: 16px; border-color: rgba(124,58,237,0.3);">
+        <h3 style="color: #a78bfa; font-size: 20px;">Scales with Compute</h3>
+        <p style="font-size: 17px; margin-top: 8px;">Unlike previous architectures, Transformers improve predictably as you add more data and compute &mdash; enabling the scaling laws behind GPT and diffusion models.</p>
+      </div>
+      <div class="card" style="margin-bottom: 16px; border-color: rgba(245,158,11,0.3);">
+        <h3 style="color: #fbbf24; font-size: 20px;">From Text to Vision to Video</h3>
+        <p style="font-size: 17px; margin-top: 8px;">Originally designed for machine translation, now the backbone of image generation (ViT, DiT) and video generation (Sora, Seedance).</p>
+      </div>
+      <div class="card" style="border-color: rgba(16,185,129,0.3);">
+        <h3 style="color: #6ee7b7; font-size: 20px;">Diffusion Transformer (DiT)</h3>
+        <p style="font-size: 17px; margin-top: 8px;">The fusion of Transformer + Diffusion &mdash; the architecture that made high-quality AI video generation possible.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18: The Video Generation Era -->
+<div class="slide slide-feature" id="slide-18">
   <div class="glow glow-2"></div>
   <div class="glow glow-3"></div>
   <span class="badge badge-amber">2024 &mdash; 2025</span>
@@ -753,7 +785,7 @@
   <button onclick="nextSlide()">&rarr;</button>
 </div>
 <div class="progress" id="progress"></div>
-<div class="slide-number" id="slide-number">1 / 17</div>
+<div class="slide-number" id="slide-number">1 / 18</div>
 
 <script>
   // YouTube embed works over http/https; fallback to thumbnail for file://
@@ -765,7 +797,7 @@
   })();
 
   let current = 1;
-  const total = 17;
+  const total = 18;
 
   function showSlide(n) {
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
