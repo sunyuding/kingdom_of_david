@@ -18,15 +18,22 @@
   }
 
   .slide {
-    display: none;
+    position: fixed;
+    top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     padding: 60px 80px;
-    position: relative;
     overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 0;
   }
 
-  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+  .slide.active { opacity: 1; pointer-events: auto; z-index: 1; }
 
   /* Slide backgrounds */
   .slide::before {
@@ -876,8 +883,8 @@
   function prevSlide() { if (current > 1) { current--; showSlide(current); } }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
   });
 
   // Touch support
