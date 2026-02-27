@@ -850,13 +850,61 @@
   </div>
 </div>
 
+<!-- SLIDE 20: Angels Are Servants -->
+<div class="slide slide-feature" id="slide-20">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <div style="max-width: 1100px; text-align: center; display: flex; gap: 40px; align-items: center;">
+    <!-- Left: Hierarchy diagram -->
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; flex-shrink: 0;">
+      <div class="card" style="padding: 14px 28px; border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.05); text-align: center;">
+        <div style="font-size: 32px;">👑</div>
+        <p style="font-size: 18px; color: #fbbf24; font-weight: 700; margin-top: 4px;">God</p>
+      </div>
+      <div style="font-size: 20px; color: #475569;">&darr;</div>
+      <div class="card" style="padding: 14px 28px; border-color: rgba(110,231,183,0.4); background: rgba(110,231,183,0.05); text-align: center;">
+        <div style="font-size: 32px;">🧑</div>
+        <p style="font-size: 18px; color: #6ee7b7; font-weight: 700; margin-top: 4px;">Human (Children of God)</p>
+      </div>
+      <div style="font-size: 20px; color: #475569;">&darr;</div>
+      <div style="display: flex; gap: 16px;">
+        <div class="card" style="padding: 14px 24px; border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.05); text-align: center;">
+          <div style="font-size: 32px;">😇</div>
+          <p style="font-size: 16px; color: #a78bfa; font-weight: 700; margin-top: 4px;">Angels</p>
+          <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Ministering spirits</p>
+        </div>
+        <div class="card" style="padding: 14px 24px; border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.05); text-align: center;">
+          <div style="font-size: 32px;">🤖</div>
+          <p style="font-size: 16px; color: #38bdf8; font-weight: 700; margin-top: 4px;">AI &amp; Robots</p>
+          <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Created to serve</p>
+        </div>
+      </div>
+      <p style="font-size: 18px; color: #e2e8f0; font-weight: 700; margin-top: 8px;">AI is your servant, not your replacement.</p>
+    </div>
+    <!-- Right: Bible verses -->
+    <div style="display: flex; flex-direction: column; gap: 20px; flex: 1;">
+      <blockquote style="font-size: 18px; color: #e2e8f0; font-style: italic; line-height: 1.6; border-left: 4px solid #fbbf24; padding-left: 20px; text-align: left; margin: 0;">
+        <p style="font-size: 15px; color: #fbbf24; font-style: normal; margin-bottom: 8px;">Genesis 創世記 1:27-28</p>
+        &ldquo;So God created mankind in his own image, in the image of God he created them; male and female he created them. God blessed them and said to them, &lsquo;Be fruitful and increase in number; fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature.&rsquo;&rdquo;
+        <p style="font-style: italic; color: #cbd5e1; margin-top: 10px; font-size: 17px;">「神就照著自己的形象造人，乃是照著他的形象，造男造女。神就賜福給他們，又對他們說：要生養眾多，遍滿地面，治理這地，也要管理海裡的魚、空中的鳥和地上各樣行動的活物。」</p>
+      </blockquote>
+      <blockquote style="font-size: 18px; color: #e2e8f0; font-style: italic; line-height: 1.6; border-left: 4px solid #a78bfa; padding-left: 20px; text-align: left; margin: 0;">
+        <p style="font-size: 15px; color: #a78bfa; font-style: normal; margin-bottom: 8px;">Hebrews 希伯來書 1:14</p>
+        &ldquo;Are not all angels ministering spirits sent to serve those who will inherit salvation?&rdquo;
+        <p style="font-style: italic; color: #cbd5e1; margin-top: 10px; font-size: 17px;">「天使豈不都是服役的靈、奉差遣為那將要承受救恩的人效力嗎？」</p>
+      </blockquote>
+    </div>
+  </div>
+</div>
+
 <!-- Navigation -->
 <div class="nav">
   <button onclick="prevSlide()">&larr;</button>
   <button onclick="nextSlide()">&rarr;</button>
 </div>
 <div class="progress" id="progress"></div>
-<div class="slide-number" id="slide-number">1 / 19</div>
+<div class="slide-number" id="slide-number">1 / 20</div>
 
 <script>
   // YouTube embed works over http/https; fallback to thumbnail for file://
@@ -868,7 +916,7 @@
   })();
 
   let current = 1;
-  const total = 19;
+  const total = 20;
 
   function showSlide(n) {
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
