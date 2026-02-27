@@ -750,6 +750,13 @@
   <h2 style="font-size: 42px; margin-bottom: 8px;">Even Fallback Jobs Are Being Replaced</h2>
   <div style="display: flex; gap: 20px; align-items: stretch; flex: 1;">
     <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div data-yt-src="https://www.youtube.com/embed/lRRtW16GalE?autoplay=1&mute=1&loop=1&playlist=lRRtW16GalE" data-yt-allow="autoplay; encrypted-media" style="flex: 1; width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.4); background: #000;"></div>
+      <div class="card" style="width: 100%; border-color: rgba(239,68,68,0.25); padding: 10px; text-align: center;">
+        <p style="font-size: 15px; color: #f87171; font-weight: 700;">🚗 Self-Driving Car</p>
+        <p style="font-size: 13px; color: #64748b; margin-top: 4px;"><span style="text-decoration: line-through; color: #ef4444;">Drive Uber instead?</span></p>
+      </div>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
       <video src="media/videos/IMG_5467.mp4" autoplay muted loop playsinline style="flex: 1; width: 100%; object-fit: contain; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.4);"></video>
       <div class="card" style="width: 100%; border-color: rgba(239,68,68,0.25); padding: 10px; text-align: center;">
         <p style="font-size: 15px; color: #f87171; font-weight: 700;">🤖 Delivery Robot</p>
@@ -757,14 +764,7 @@
       </div>
     </div>
     <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-      <iframe src="https://www.youtube.com/embed/lRRtW16GalE?autoplay=1&mute=1&loop=1&playlist=lRRtW16GalE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="flex: 1; width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.4);"></iframe>
-      <div class="card" style="width: 100%; border-color: rgba(239,68,68,0.25); padding: 10px; text-align: center;">
-        <p style="font-size: 15px; color: #f87171; font-weight: 700;">🚗 Self-Driving Car</p>
-        <p style="font-size: 13px; color: #64748b; margin-top: 4px;"><span style="text-decoration: line-through; color: #ef4444;">Drive Uber instead?</span></p>
-      </div>
-    </div>
-    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-      <iframe src="https://www.youtube.com/embed/lQsvTrRTBRs?autoplay=1&mute=1&loop=1&playlist=lQsvTrRTBRs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="flex: 1; width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.4);"></iframe>
+      <div data-yt-src="https://www.youtube.com/embed/lQsvTrRTBRs?autoplay=1&mute=1&loop=1&playlist=lQsvTrRTBRs" data-yt-allow="autoplay; encrypted-media" style="flex: 1; width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.4); background: #000;"></div>
       <div class="card" style="width: 100%; border-color: rgba(239,68,68,0.25); padding: 10px; text-align: center;">
         <p style="font-size: 15px; color: #f87171; font-weight: 700;">🏠 Humanoid Robot</p>
         <p style="font-size: 13px; color: #64748b; margin-top: 4px;"><span style="text-decoration: line-through; color: #ef4444;">Do housework instead?</span></p>
@@ -874,7 +874,20 @@
 
   function showSlide(n) {
     document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    document.getElementById('slide-' + n).classList.add('active');
+    var slide = document.getElementById('slide-' + n);
+    slide.classList.add('active');
+    // Lazy-load YouTube iframes
+    slide.querySelectorAll('[data-yt-src]').forEach(function(el) {
+      if (!el.querySelector('iframe')) {
+        var iframe = document.createElement('iframe');
+        iframe.src = el.getAttribute('data-yt-src');
+        iframe.frameBorder = '0';
+        iframe.allow = el.getAttribute('data-yt-allow') || '';
+        iframe.allowFullscreen = true;
+        iframe.style.cssText = 'width:100%;height:100%;border:none;';
+        el.appendChild(iframe);
+      }
+    });
     document.getElementById('progress').style.width = (n / total * 100) + '%';
     document.getElementById('slide-number').textContent = n + ' / ' + total;
   }
